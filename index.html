@@ -6,14 +6,27 @@
 </head>
 <body>
 
-<!-- NAVBAR -->
 <header class="navbar">
-  <span class="logo">Fashion</span>
-  <input id="search" placeholder="Search fashion...">
+  <div class="logo">Fashion</div>
+
+  <input id="search" placeholder="Search for products..." onkeyup="renderProducts()">
+
   <div class="icons">
-    ❤️ 🛒 👤
+    <span onclick="showWishlist()">❤️</span>
+    <span onclick="showCart()">🛒 (<b id="count">0</b>)</span>
+    <span onclick="toggleProfile()">👤</span>
   </div>
 </header>
+
+<!-- PROFILE DROPDOWN -->
+<div id="profileMenu" class="dropdown hide">
+  <h4 id="username">User</h4>
+  <p onclick="showOrders()">Orders</p>
+  <p>Help Center</p>
+  <p>Manage Account</p>
+  <p>Settings</p>
+  <p class="logout">Logout</p>
+</div>
 
 <!-- SLIDER -->
 <div class="slider">
@@ -32,29 +45,16 @@
 </div>
 
 <!-- PRODUCTS -->
-<div id="productPage" class="hide">
-  <h2 id="catTitle"></h2>
-  <div id="products" class="grid"></div>
-</div>
+<div id="products" class="grid"></div>
+
+<!-- WISHLIST -->
+<div id="wishlist" class="panel hide"></div>
 
 <!-- CART -->
-<div id="cartPage" class="hide"></div>
+<div id="cart" class="panel hide"></div>
 
-<!-- CHECKOUT -->
-<div id="checkoutPage" class="hide">
-  <h3>Delivery Address</h3>
-  <input id="addr" placeholder="Enter address">
-  <h3>Payment</h3>
-  <select>
-    <option>Cash on Delivery</option>
-  </select>
-  <button onclick="placeOrder()">Place Order</button>
-</div>
-
-<!-- SUCCESS -->
-<div id="successPage" class="hide">
-  <h2>✅ Order Successfully Placed</h2>
-</div>
+<!-- ORDERS -->
+<div id="orders" class="panel hide"></div>
 
 <script src="script.js"></script>
 </body>
