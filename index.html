@@ -1,57 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Fashion Defines Everything</title>
+  <title>Fashion App</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<!-- LOGIN -->
+<div id="loginPage" class="center">
+  <h2>Login</h2>
+  <input id="user" placeholder="Email or Mobile">
+  <input id="pass" placeholder="Password" type="password">
+  <button onclick="login()">Login</button>
+  <p onclick="showSignup()">New user? Signup</p>
+</div>
+
+<!-- SIGNUP -->
+<div id="signupPage" class="center hide">
+  <h2>Signup</h2>
+  <input id="newUser" placeholder="Email/Mobile">
+  <input id="newPass" placeholder="Password">
+  <button onclick="signup()">Create Account</button>
+</div>
+
+<!-- HOME -->
+<div id="homePage" class="hide">
+
 <header class="navbar">
-  <div class="logo">Fashion</div>
-
-  <nav>
-    <a onclick="setCategory('All')">HOME</a>
-    <a onclick="setCategory('Men')">MEN</a>
-    <a onclick="setCategory('Women')">WOMEN</a>
-    <a onclick="setCategory('Kids')">KIDS</a>
-  </nav>
-
-  <div class="actions">
-    <input id="search" placeholder="Search..." onkeyup="renderProducts()">
-    <span onclick="showSection('cart')">🛒 (<b id="count">0</b>)</span>
+  <span onclick="goBack()">⬅️</span>
+  <input id="search" placeholder="Search fashion...">
+  <div>
+    ❤️ 🛒 👤
   </div>
 </header>
 
-<div id="products" class="grid"></div>
+<h2>Fashion Carnival 🔥 50% OFF</h2>
 
-<!-- PRODUCT DETAILS -->
-<div id="details" class="popup"></div>
-
-<!-- CART -->
-<div id="cart" class="panel"></div>
-
-<!-- CHECKOUT -->
-<div class="panel">
-  <h3>Checkout</h3>
-  <form onsubmit="placeOrder(event)">
-    <input id="name" placeholder="Name" required>
-    <input id="address" placeholder="Address" required>
-
-    <select id="payment">
-      <option>UPI</option>
-      <option>Card</option>
-      <option>Cash on Delivery</option>
-    </select>
-
-    <button>Place Order</button>
-  </form>
-  <p id="msg"></p>
+<!-- SLIDER -->
+<div class="slider">
+  <img src="https://picsum.photos/600/200?1">
+  <img src="https://picsum.photos/600/200?2">
+  <img src="https://picsum.photos/600/200?3">
 </div>
 
-<!-- ORDERS -->
-<div id="orders" class="panel"></div>
+<!-- CATEGORIES -->
+<div class="grid">
+  <div onclick="openCategory('Men')">MEN</div>
+  <div onclick="openCategory('Women')">WOMEN</div>
+  <div onclick="openCategory('Kids')">KIDS</div>
+</div>
+
+</div>
+
+<!-- PRODUCTS -->
+<div id="productPage" class="hide">
+  <h2 id="catTitle"></h2>
+  <div id="products" class="grid"></div>
+</div>
+
+<!-- CART -->
+<div id="cartPage" class="hide"></div>
+
+<!-- CHECKOUT -->
+<div id="checkoutPage" class="hide">
+  <h3>Address</h3>
+  <input id="addr" placeholder="Enter address">
+  <h3>Payment</h3>
+  <select>
+    <option>Cash on Delivery</option>
+  </select>
+  <button onclick="placeOrder()">Place Order</button>
+</div>
+
+<!-- SUCCESS -->
+<div id="successPage" class="hide">
+  <h2>✅ Order Successfully Placed</h2>
+</div>
 
 <script src="script.js"></script>
 </body>
 </html>
-  
+
+
