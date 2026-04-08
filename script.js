@@ -1,82 +1,92 @@
-let users=[];
-let currentUser=null;
-let cart=[];
 let currentCategory="";
+let cart=[];
 
-// LOGIN
-function login(){
-  let u=document.getElementById("user").value;
-  let p=document.getElementById("pass").value;
+/* 🔄 SLIDER */
+let slides=document.querySelectorAll(".slider img");
+let index=0;
 
-  let found=users.find(x=>x.u===u && x.p===p);
-  if(found){
-    currentUser=u;
-    showPage("homePage");
-  }else{
-    alert("Invalid login");
-  }
+function showSlide(){
+  slides.forEach(s=>s.classList.remove("active"));
+  slides[index].classList.add("active");
+  index=(index+1)%slides.length;
 }
+setInterval(showSlide,10000);
+showSlide();
 
-// SIGNUP
-function signup(){
-  let u=document.getElementById("newUser").value;
-  let p=document.getElementById("newPass").value;
-
-  users.push({u,p});
-  alert("Signup success");
-  showPage("loginPage");
-}
-
-function showSignup(){
-  showPage("signupPage");
-}
-
-function showPage(id){
-  document.querySelectorAll("body > div").forEach(d=>d.classList.add("hide"));
-  document.getElementById(id).classList.remove("hide");
-}
-
-// CATEGORY
+/* CATEGORY */
 function openCategory(cat){
   currentCategory=cat;
   document.getElementById("catTitle").innerText=cat;
-  showPage("productPage");
+  document.getElementById("productPage").classList.remove("hide");
   loadProducts();
 }
 
-// PRODUCTS
+/* PRODUCTS */
 function loadProducts(){
   let el=document.getElementById("products");
-  let items="";
+  let html="";
 
   for(let i=1;i<=20;i++){
-    items+=`
-      <div>
-        <img src="https://picsum.photos/200?${i}">
-        <p>${currentCategory} Dress ${i}</p>
-        <p>₹${500+i*10}</p>
-        <button onclick="addCart('${currentCategory} ${i}')">Add</button>
-      </div>
+    html+=`
+    <div class="card">
+      <img src="https://picsum.photos/200?random=${i}">
+      <h4>${currentCategory} Style ${i}</h4>
+      <p>₹${500+i*20}</p>
+
+      <p>Size:
+        <select>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+        </select>
+      </p>
+
+      <p>Color:
+        <select>
+          <option>Red</option>
+          <option>Blue</option>
+          <option>Black</option>
+        </select>
+      </p>
+
+      <button onclick="addCart('${currentCategory} ${i}')">
+        Add to Bag
+      </button>
+    </div>
     `;
   }
 
-  el.innerHTML=items;
+  el.innerHTML=html;
 }
 
-function addCart(name){
-  cart.push(name);
-  alert("Added to bag");
+/* CART */
+function addCart(item){
+  cart.push(item);
+  alert("Added to Bag");
+  showCart();
 }
 
-// ORDER
+function showCart(){
+  let el=document.getElementById("cartPage");
+  el.classList.remove("hide");
+
+  let html="<h2>Cart</h2>";
+
+  cart.forEach(i=>{
+    html+=`<p>${i}</p>`;
+  });
+
+  html+=`<button onclick="goCheckout()">Go to Checkout</button>`;
+
+  el.innerHTML=html;
+}
+
+/* CHECKOUT */
+function goCheckout(){
+  document.getElementById("checkoutPage").classList.remove("hide");
+}
+
+/* ORDER */
 function placeOrder(){
-  showPage("successPage");
+  document.getElementById("successPage").classList.remove("hide");
 }
-
-// BACK
-function goBack(){
-  showPage("homePage");
-}
-
-// INIT
-showPage("loginPage");
