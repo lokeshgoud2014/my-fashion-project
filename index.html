@@ -2,12 +2,12 @@
 <html>
 <head>
   <title>Fashion Defines Everything</title>
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header class="navbar">
-  <div class="logo">Fashion Defines Everything</div>
+  <div class="logo">Fashion</div>
 
   <nav>
     <a onclick="setCategory('All')">HOME</a>
@@ -17,48 +17,41 @@
   </nav>
 
   <div class="actions">
-    <input type="text" id="search" placeholder="Search..." onkeyup="renderProducts()">
-    <span onclick="scrollToSection('wishlist')">❤️</span>
-    <span onclick="scrollToSection('cart')">🛒 (<b id="count">0</b>)</span>
+    <input id="search" placeholder="Search..." onkeyup="renderProducts()">
+    <span onclick="showSection('cart')">🛒 (<b id="count">0</b>)</span>
   </div>
 </header>
 
-<!-- 🔄 AUTO SLIDER -->
-<div class="slider">
-  <div class="slides">
-    <div class="slide" onclick="setCategory('Men')">🔥 50% OFF - MEN</div>
-    <div class="slide" onclick="setCategory('Women')">💃 30% OFF - WOMEN</div>
-    <div class="slide" onclick="setCategory('Kids')">🧒 70% OFF - KIDS</div>
-  </div>
-</div>
-
-<h2 class="title">Products</h2>
 <div id="products" class="grid"></div>
 
-<div id="wishlist" class="panel"></div>
+<!-- PRODUCT DETAILS -->
+<div id="details" class="popup"></div>
+
+<!-- CART -->
 <div id="cart" class="panel"></div>
 
-<!-- Checkout -->
+<!-- CHECKOUT -->
 <div class="panel">
   <h3>Checkout</h3>
   <form onsubmit="placeOrder(event)">
-    <input placeholder="Name" id="name" required>
-    <input placeholder="Phone" id="phone" required>
-    <input placeholder="Address" id="address" required>
+    <input id="name" placeholder="Name" required>
+    <input id="address" placeholder="Address" required>
+
     <select id="payment">
       <option>UPI</option>
       <option>Card</option>
       <option>Cash on Delivery</option>
     </select>
+
     <button>Place Order</button>
   </form>
   <p id="msg"></p>
 </div>
 
+<!-- ORDERS -->
 <div id="orders" class="panel"></div>
 
-<script src="./script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
-    
-
+  
