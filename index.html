@@ -1,31 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fashion Defines Everything</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
 
 <header class="header">
   <div class="logo">Fashion Defines Everything</div>
 
   <nav class="nav">
-    <a>MEN</a>
-    <a>WOMEN</a>
-    <a>KIDS</a>
-    <a>HOME</a>
-    <a>BEAUTY</a>
-    <a>GENZ</a>
+    <a onclick="filterCollection('All')">HOME</a>
+    <a onclick="filterCollection('Men')">MEN</a>
+    <a onclick="filterCollection('Women')">WOMEN</a>
+    <a onclick="filterCollection('Kids')">KIDS</a>
   </nav>
 
-  <div class="right-section">
-    <input type="text" placeholder="Search for products, brands and more" id="searchInput" onkeyup="renderProducts()" />
-
-    <div class="icons">
-      <span>Profile</span>
-      <span onclick="scrollToSection('wishlistSection')">Wishlist</span>
-      <span onclick="scrollToSection('cartSection')">Bag</span>
-    </div>
+  <div class="right">
+    <input type="text" id="search" placeholder="Search..." onkeyup="renderProducts()">
+    <span onclick="showSection('wishlist')">❤️ Wishlist</span>
+    <span onclick="showSection('cart')">🛒 Cart</span>
   </div>
 </header>
+
 <section class="banner">
-  <div class="banner-text">
-    <h1>FLAT ₹300 OFF</h1>
-    <p>On Your First Purchase</p>
-    <h2>Fashion Carnival</h2>
-    <p>50-80% OFF</p>
-  </div>
+  <h1>FLAT ₹300 OFF</h1>
+  <p>Fashion Carnival 50-80% OFF</p>
 </section>
+
+<h2 class="title">Products</h2>
+<div id="products" class="grid"></div>
+
+<div id="wishlist" class="panel"></div>
+<div id="cart" class="panel"></div>
+
+<script src="./script.js"></script>
+</body>
+</html>
