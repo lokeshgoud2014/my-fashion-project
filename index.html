@@ -18,17 +18,19 @@
 
   <div class="right">
     <input type="text" id="search" placeholder="Search..." onkeyup="renderProducts()">
-    <span onclick="showSection('wishlist')">❤️ Wishlist</span>
-    <span onclick="showSection('cart')">
-      🛒 Cart <b id="cartCount">0</b>
-    </span>
+    <span onclick="scrollTo('wishlist')">❤️ Wishlist</span>
+    <span onclick="scrollTo('cart')">🛒 Cart (<b id="cartCount">0</b>)</span>
   </div>
 </header>
 
-<section class="banner">
-  <h1>Fashion Carnival</h1>
-  <p>50-80% OFF</p>
-</section>
+<!-- 🔄 AUTO SLIDER -->
+<div class="slider" id="slider">
+  <div class="slides">
+    <div class="slide" onclick="filterCollection('Men')">🔥 50% OFF - MEN</div>
+    <div class="slide" onclick="filterCollection('Women')">💃 30% OFF - WOMEN</div>
+    <div class="slide" onclick="filterCollection('Kids')">🧒 70% OFF - KIDS</div>
+  </div>
+</div>
 
 <h2 class="title">Products</h2>
 <div id="products" class="grid"></div>
@@ -36,7 +38,27 @@
 <div id="wishlist" class="panel"></div>
 <div id="cart" class="panel"></div>
 
+<!-- Checkout -->
+<div class="panel">
+  <h3>Checkout</h3>
+  <form onsubmit="placeOrder(event)">
+    <input placeholder="Name" id="name" required>
+    <input placeholder="Phone" id="phone" required>
+    <input placeholder="Address" id="address" required>
+    <select id="payment">
+      <option>UPI</option>
+      <option>Card</option>
+      <option>Cash on Delivery</option>
+    </select>
+    <button>Place Order</button>
+  </form>
+  <p id="msg"></p>
+</div>
+
+<div id="orders" class="panel"></div>
+
 <script src="./script.js"></script>
 </body>
 </html>
- 
+    
+
