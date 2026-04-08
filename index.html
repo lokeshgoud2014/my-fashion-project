@@ -6,36 +6,35 @@
 </head>
 <body>
 
-<header class="header">
+<header class="navbar">
   <div class="logo">Fashion Defines Everything</div>
 
-  <nav class="nav">
-    <a onclick="filterCollection('All')">HOME</a>
-    <a onclick="filterCollection('Men')">MEN</a>
-    <a onclick="filterCollection('Women')">WOMEN</a>
-    <a onclick="filterCollection('Kids')">KIDS</a>
+  <nav>
+    <a onclick="setCategory('Men')">MEN</a>
+    <a onclick="setCategory('Women')">WOMEN</a>
+    <a onclick="setCategory('Kids')">KIDS</a>
+    <a onclick="setCategory('All')">HOME</a>
   </nav>
 
-  <div class="right">
+  <div class="actions">
     <input type="text" id="search" placeholder="Search..." onkeyup="renderProducts()">
-    <span onclick="scrollTo('wishlist')">❤️ Wishlist</span>
-    <span onclick="scrollTo('cart')">🛒 Cart (<b id="cartCount">0</b>)</span>
+    <span onclick="showSection('wishlist')">❤️</span>
+    <span onclick="showSection('cart')">🛒 (<b id="count">0</b>)</span>
   </div>
 </header>
 
-<!-- 🔄 AUTO SLIDER -->
-<div class="slider" id="slider">
-  <div class="slides">
-    <div class="slide" onclick="filterCollection('Men')">🔥 50% OFF - MEN</div>
-    <div class="slide" onclick="filterCollection('Women')">💃 30% OFF - WOMEN</div>
-    <div class="slide" onclick="filterCollection('Kids')">🧒 70% OFF - KIDS</div>
-  </div>
+<!-- Banner -->
+<div class="banner">
+  <h1>Fashion Sale 50-80% OFF</h1>
 </div>
 
-<h2 class="title">Products</h2>
+<!-- Products -->
 <div id="products" class="grid"></div>
 
+<!-- Wishlist -->
 <div id="wishlist" class="panel"></div>
+
+<!-- Cart -->
 <div id="cart" class="panel"></div>
 
 <!-- Checkout -->
@@ -48,7 +47,7 @@
     <select id="payment">
       <option>UPI</option>
       <option>Card</option>
-      <option>Cash on Delivery</option>
+      <option>COD</option>
     </select>
     <button>Place Order</button>
   </form>
@@ -60,5 +59,3 @@
 <script src="./script.js"></script>
 </body>
 </html>
-    
-
