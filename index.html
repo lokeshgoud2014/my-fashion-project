@@ -2,8 +2,8 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fashion Store</title>
-<link rel="stylesheet" href="styles.css">
+<title>AJIO Final</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -12,24 +12,22 @@
   <div>
     <span onclick="showWishlist()">❤️</span>
     <span onclick="showCart()">🛍️</span>
+    <span onclick="showAccount()">👤</span>
   </div>
 </header>
 
-<!-- Slider -->
 <div class="slider">
   <img id="slide" src="https://picsum.photos/id/1011/800/300">
 </div>
 
-<!-- Categories -->
 <div class="categories">
   <div onclick="openCategory('men')">Men</div>
   <div onclick="openCategory('women')">Women</div>
   <div onclick="openCategory('kids')">Kids</div>
 </div>
 
-<!-- Filters -->
 <div class="filters">
-  <input type="text" id="search" placeholder="Search...">
+  <input type="text" id="search" placeholder="Search">
   <select id="priceFilter">
     <option value="all">All</option>
     <option value="low">Below 700</option>
@@ -42,6 +40,21 @@
 
 <div id="wishlistBox" class="panel"></div>
 <div id="cartBox" class="panel"></div>
+
+<div id="accountBox" class="panel">
+  <h3>Account</h3>
+  <input id="username" placeholder="Enter Name">
+  <button onclick="saveUser()">Save</button>
+  <h4>Orders</h4>
+  <ul id="orders"></ul>
+</div>
+
+<footer>
+  <div onclick="goHome()">🏠</div>
+  <div onclick="showWishlist()">❤️</div>
+  <div onclick="showCart()">🛍️</div>
+  <div onclick="showAccount()">👤</div>
+</footer>
 
 <script src="script.js"></script>
 </body>
