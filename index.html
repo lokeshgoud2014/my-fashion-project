@@ -1,182 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fashion Store</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      background: #f5f5f5;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fashion Store PRO MAX</title>
+<style>
+body{font-family:Arial;margin:0;background:#f5f5f5}
+header{display:flex;justify-content:space-between;padding:10px;background:#fff}
+.search-box input{padding:6px;border-radius:15px}
+.nav-icons span{margin-left:10px;cursor:pointer}
 
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      background: white;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
+.slider{overflow:hidden;margin:10px}
+.slides{display:flex;transition:0.5s}
+.slides img{width:100%;height:220px;object-fit:cover}
 
-    .logo {
-      font-size: 22px;
-      font-weight: bold;
-    }
+.products{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:10px}
+.product{background:#fff;padding:10px;border-radius:10px}
+.product img{width:100%;height:140px;object-fit:cover}
+button{margin-top:5px}
 
-    .search-box input {
-      padding: 8px;
-      width: 200px;
-      border-radius: 20px;
-      border: 1px solid #ccc;
-    }
+.panel{position:fixed;top:60px;right:10px;background:#fff;padding:10px;width:240px;max-height:350px;overflow:auto;display:none}
 
-    .nav-icons span {
-      margin-left: 15px;
-      cursor: pointer;
-    }
-
-    .categories {
-      display: flex;
-      overflow-x: auto;
-      background: white;
-      padding: 10px;
-    }
-
-    .category {
-      margin-right: 15px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .category img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-    }
-
-    .banner {
-      margin: 15px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .banner img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 15px;
-      padding: 15px;
-    }
-
-    .product {
-      background: white;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .product img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    .product h4 {
-      margin: 10px 0 5px;
-    }
-
-    .product p {
-      color: green;
-      font-weight: bold;
-    }
-
-    footer {
-      background: white;
-      padding: 10px;
-      display: flex;
-      justify-content: space-around;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-    }
-
-  </style>
+footer{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:8px}
+</style>
 </head>
 <body>
 
 <header>
-  <div class="logo">AJIO</div>
-  <div class="search-box">
-    <input type="text" placeholder="Search products...">
-  </div>
-  <div class="nav-icons">
-    <span>🔔</span>
-    <span>❤️</span>
-    <span>🛍️</span>
-  </div>
+<div>AJIO</div>
+<div class="search-box"><input id="search" placeholder="Search"></div>
+<div class="nav-icons">
+<span onclick="toggleWishlist()">❤️</span>
+<span onclick="toggleCart()">🛍️</span>
+</div>
 </header>
 
-<div class="categories">
-  <div class="category">
-    <img src="https://via.placeholder.com/50">
-    <p>Men</p>
-  </div>
-  <div class="category">
-    <img src="https://via.placeholder.com/50">
-    <p>Women</p>
-  </div>
-  <div class="category">
-    <img src="https://via.placeholder.com/50">
-    <p>Kids</p>
-  </div>
-  <div class="category">
-    <img src="https://via.placeholder.com/50">
-    <p>Footwear</p>
-  </div>
+<div class="slider">
+<div class="slides" id="slides">
+<img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d">
+<img src="https://images.unsplash.com/photo-1445205170230-053b83016050">
+<img src="https://images.unsplash.com/photo-1483985988355-763728e1935b">
 </div>
-
-<div class="banner">
-  <img src="https://via.placeholder.com/800x300?text=Sale+40-80%+OFF">
 </div>
 
 <div class="products" id="productList"></div>
 
+<div class="panel" id="cartBox">
+<h4>Cart</h4>
+<ul id="cartItems"></ul>
+<p id="total"></p>
+<button onclick="checkout()">Checkout</button>
+</div>
+
+<div class="panel" id="wishBox">
+<h4>Wishlist</h4>
+<ul id="wishItems"></ul>
+</div>
+
 <footer>
-  <div>🏠 Home</div>
-  <div>🔥 Trends</div>
-  <div>📂 Categories</div>
-  <div>👤 Account</div>
+<div>🏠</div><div>🔥</div><div>📂</div><div>👤</div>
 </footer>
 
 <script>
-  const products = [
-    {name: "T-Shirt", price: "₹499", img: "https://via.placeholder.com/150"},
-    {name: "Jeans", price: "₹999", img: "https://via.placeholder.com/150"},
-    {name: "Shoes", price: "₹1499", img: "https://via.placeholder.com/150"},
-    {name: "Dress", price: "₹799", img: "https://via.placeholder.com/150"}
-  ];
+let products=[
+{name:"T-Shirt",price:500,img:"https://images.unsplash.com/photo-1523381210434-271e8be1f52b"},
+{name:"Jeans",price:900,img:"https://images.unsplash.com/photo-1512436991641-6745cdb1723f"},
+{name:"Shoes",price:1400,img:"https://images.unsplash.com/photo-1528701800489-20be3c3d2e5c"},
+{name:"Dress",price:800,img:"https://images.unsplash.com/photo-1490481651871-ab68de25d43d"}
+];
 
-  const container = document.getElementById("productList");
+let cart=[];
+let wishlist=[];
 
-  products.forEach(p => {
-    container.innerHTML += `
-      <div class="product">
-        <img src="${p.img}">
-        <h4>${p.name}</h4>
-        <p>${p.price}</p>
-      </div>
-    `;
-  });
+function displayProducts(list){
+let c=document.getElementById("productList");c.innerHTML="";
+list.forEach((p,i)=>{
+ c.innerHTML+=`<div class="product">
+ <img src="${p.img}">
+ <h4>${p.name}</h4>
+ <p>₹${p.price}</p>
+ <button onclick="addCart(${i})">Add</button>
+ <button onclick="addWish(${i})">❤️</button>
+ </div>`;
+});}
+
+displayProducts(products);
+
+function addCart(i){
+let item=cart.find(c=>c.name===products[i].name);
+if(item){item.qty++} else {cart.push({...products[i],qty:1})}
+renderCart();
+}
+
+function addWish(i){wishlist.push(products[i]);renderWish();}
+
+function renderCart(){
+let list=document.getElementById("cartItems");
+let total=0;list.innerHTML="";
+cart.forEach((item,index)=>{
+ total+=item.price*item.qty;
+ list.innerHTML+=`<li>
+ ${item.name} x${item.qty}
+ <button onclick="inc(${index})">+</button>
+ <button onclick="dec(${index})">-</button>
+ </li>`;
+});
+document.getElementById("total").innerText="Total: ₹"+total;
+}
+
+function inc(i){cart[i].qty++;renderCart();}
+function dec(i){
+cart[i].qty--;
+if(cart[i].qty<=0)cart.splice(i,1);
+renderCart();
+}
+
+function renderWish(){
+let list=document.getElementById("wishItems");list.innerHTML="";
+wishlist.forEach(item=>{list.innerHTML+=`<li>${item.name}</li>`});
+}
+
+function toggleCart(){
+let b=document.getElementById("cartBox");b.style.display=b.style.display==="block"?"none":"block";
+}
+function toggleWishlist(){
+let b=document.getElementById("wishBox");b.style.display=b.style.display==="block"?"none":"block";
+}
+
+function checkout(){alert("Order placed successfully! 🎉");cart=[];renderCart();}
+
+// search
+search.oninput=()=>{
+let val=search.value.toLowerCase();
+displayProducts(products.filter(p=>p.name.toLowerCase().includes(val)));
+};
+
+// slider
+let i=0;
+setInterval(()=>{
+i=(i+1)%3;
+slides.style.transform=`translateX(-${i*100}%)`;
+},3000);
 </script>
 
 </body>
