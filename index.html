@@ -2,149 +2,167 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fashion PRO MAX+</title>
+<title>Fashion ULTRA PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:Arial;margin:0;background:#f5f5f5}
+body{font-family:Poppins;margin:0;background:#f5f5f5;transition:0.3s}
+.dark{background:#121212;color:#fff}
 header{display:flex;justify-content:space-between;padding:10px;background:#fff}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:10px}
-.card{background:#fff;padding:10px;text-align:center;border-radius:10px;cursor:pointer}
-.card img{width:100%;height:120px;object-fit:cover}
-.products{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px}
-.product{background:#fff;padding:10px;border-radius:10px}
+.dark header{background:#1e1e1e}
+button{cursor:pointer}
+
+.sidebar{position:fixed;left:0;top:0;width:200px;height:100%;background:#fff;padding:10px;overflow:auto}
+.dark .sidebar{background:#1e1e1e}
+
+.products{margin-left:210px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:10px}
+.product{background:#fff;padding:10px;border-radius:10px;transition:0.3s}
+.dark .product{background:#1e1e1e}
+.product:hover{transform:scale(1.05)}
 .product img{width:100%;height:120px;object-fit:cover}
-select,button{margin-top:5px;width:100%}
-.panel{position:fixed;top:60px;right:10px;background:#fff;padding:10px;width:250px;display:none}
+.badge{background:red;color:#fff;padding:2px 5px;font-size:12px}
+
+.panel{position:fixed;right:0;top:0;width:300px;height:100%;background:#fff;padding:10px;overflow:auto;display:none}
+.dark .panel{background:#1e1e1e}
+
+footer{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:8px}
+.dark footer{background:#1e1e1e}
+
+.loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
 
+<div class="loading" id="loading">Loading...</div>
+
 <header>
 <div>AJIO</div>
 <div>
-<span onclick="showCart()">🛒</span>
+<button onclick="toggleDark()">🌙</button>
+<button onclick="showCart()">🛒</button>
 </div>
 </header>
 
-<!-- MAIN CATEGORY -->
-<div id="main" class="grid">
-<div class="card" onclick="showSub('men')"><img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b"><p>Men</p></div>
-<div class="card" onclick="showSub('women')"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d"><p>Women</p></div>
-<div class="card" onclick="showSub('kids')"><img src="https://images.unsplash.com/photo-1517841905240-472988babdf9"><p>Kids</p></div>
+<div class="sidebar">
+<h3>Filters</h3>
+<input placeholder="Search" id="search"><br><br>
+<label>Price < 1000</label><input type="checkbox" id="priceFilter"><br>
+<label>Size M</label><input type="checkbox" id="sizeFilter"><br>
+<label>Color Black</label><input type="checkbox" id="colorFilter">
 </div>
 
-<!-- SUB CATEGORY -->
-<div id="sub" class="grid" style="display:none"></div>
+<div class="products" id="products"></div>
 
-<!-- PRODUCTS -->
-<div id="products" class="products" style="display:none"></div>
-
-<!-- CART -->
 <div class="panel" id="cartBox">
 <h3>Cart</h3>
 <ul id="cartItems"></ul>
 <p id="total"></p>
-<select id="payment">
-<option>UPI</option>
-<option>Card</option>
-<option>Cash on Delivery</option>
-</select>
+<button onclick="goCheckout()">Checkout</button>
+</div>
+
+<div class="panel" id="checkoutBox">
+<h3>Checkout</h3>
+<input placeholder="Address" id="address"><br>
+<select id="payment"><option>UPI</option><option>Card</option></select>
 <button onclick="placeOrder()">Place Order</button>
 </div>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+
+<div class="panel" id="ordersBox">
+<h3>Orders</h3>
+<ul id="orders"></ul>
+</div>
+
+<footer>
+<div onclick="goHome()">🏠</div>
+<div onclick="showOrders()">📦</div>
+<div onclick="showCart()">🛒</div>
+</footer>
 
 <script>
-const firebaseConfig = {
-  apiKey: "YOUR_KEY",
-  authDomain: "YOUR_DOMAIN",
-  projectId: "YOUR_ID"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-</script>
-<script>
-let subCategories={
-men:["Traditional","Party","Summer","Shirts","Jeans","Tshirts"],
-women:["Sarees","Party","Kurtis","Tops","Jeans","Gowns"],
-kids:["Frocks","Sets","Tshirts","Shorts","Winter","Party"]
-};
-
 let products=[];
-let cart=[];
+let cart=JSON.parse(localStorage.getItem('cart'))||[];
+let orders=JSON.parse(localStorage.getItem('orders'))||[];
 
-function showSub(type){
-document.getElementById("main").style.display="none";
-let sub=document.getElementById("sub");
-sub.style.display="grid";
-sub.innerHTML="";
-subCategories[type].forEach(s=>{
-sub.innerHTML+=`<div class='card' onclick="showProducts('${s}')">${s}</div>`;
+// fetch API products
+fetch('https://fakestoreapi.com/products')
+.then(res=>res.json())
+.then(data=>{
+products=data;
+display(products);
+document.getElementById('loading').style.display='none';
 });
-}
 
-function showProducts(cat){
-document.getElementById("sub").style.display="none";
-let p=document.getElementById("products");
-p.style.display="grid";
-p.innerHTML="";
-
-products=[];
-for(let i=1;i<=20;i++){
-products.push({name:cat+" "+i,price:500+i*10,img:"https://source.unsplash.com/200x200/?fashion"});
-}
-
-products.forEach((item,i)=>{
+function display(list){
+let p=document.getElementById('products');p.innerHTML='';
+list.forEach((item,i)=>{
 p.innerHTML+=`<div class='product'>
-<img src='${item.img}'>
-<p>${item.name}</p>
+<span class='badge'>50% OFF</span>
+<img src='${item.image}'>
+<p>${item.title.substring(0,20)}</p>
+⭐ ${item.rating.rate}
 <p>₹${item.price}</p>
-<select id='size${i}'><option>S</option><option>M</option><option>L</option></select>
-<select id='color${i}'><option>Red</option><option>Blue</option><option>Black</option></select>
-<button onclick='addCart(${i})'>Add to Cart</button>
+<button onclick='addCart(${i})'>Add</button>
+<button onclick='remove(${i})'>Remove</button>
 </div>`;
-});
-}
+});}
 
-function addCart(i){
-let size=document.getElementById("size"+i).value;
-let color=document.getElementById("color"+i).value;
-cart.push({...products[i],size,color});
-renderCart();
-}
+function addCart(i){cart.push(products[i]);save();renderCart();}
+function remove(i){cart.splice(i,1);save();renderCart();}
 
 function renderCart(){
-let list=document.getElementById("cartItems");
-let total=0;list.innerHTML="";
-cart.forEach(item=>{
-total+=item.price;
-list.innerHTML+=`<li>${item.name} (${item.size},${item.color})</li>`;
-});
-document.getElementById("total").innerText="Total ₹"+total;
+let list=document.getElementById('cartItems');
+let total=0;list.innerHTML='';
+cart.forEach(item=>{total+=item.price;list.innerHTML+=`<li>${item.title}</li>`});
+document.getElementById('total').innerText='Total ₹'+total;
 }
 
-function showCart(){
-let c=document.getElementById("cartBox");
-c.style.display=c.style.display==='block'?'none':'block';
-}
+function save(){localStorage.setItem('cart',JSON.stringify(cart));}
+
+function showCart(){toggle('cartBox');renderCart();}
+function goCheckout(){toggle('checkoutBox');}
+function showOrders(){toggle('ordersBox');renderOrders();}
 
 function placeOrder(){
-  let method = document.getElementById("payment").value;
-
-  db.collection("orders").add({
-    items: cart,
-    payment: method,
-    date: new Date()
-  });
-
-  alert("Order placed successfully 🔥");
-  cart=[];
-  renderCart();
+orders.push(...cart);
+localStorage.setItem('orders',JSON.stringify(orders));
+cart=[];save();
+alert('Payment Success 🎉');
 }
+
+function renderOrders(){
+let o=document.getElementById('orders');o.innerHTML='';
+orders.forEach(i=>o.innerHTML+=`<li>${i.title}</li>`);
+}
+
+function toggle(id){
+let el=document.getElementById(id);
+el.style.display=el.style.display==='block'?'none':'block';
+}
+
+function toggleDark(){document.body.classList.toggle('dark');}
+
+// filters
+search.oninput=()=>{
+let val=search.value.toLowerCase();
+display(products.filter(p=>p.title.toLowerCase().includes(val)));
+};
+
+priceFilter.onchange=applyFilter;
+sizeFilter.onchange=applyFilter;
+colorFilter.onchange=applyFilter;
+
+function applyFilter(){
+let list=products.filter(p=>{
+return (!priceFilter.checked||p.price<1000);
+});
+display(list);
+}
+
+function goHome(){location.reload();}
 </script>
 
 </body>
 </html>
+  
 
 
 
