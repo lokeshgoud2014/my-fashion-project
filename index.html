@@ -8,57 +8,45 @@
 
 <header class="navbar">
   <div class="logo">Fashion</div>
+
   <input placeholder="Search for products...">
+
   <div class="icons">
-    ❤️ <span onclick="showCart()">🛒 (<b id="count">0</b>)</span> 👤
+    <div class="icon" onclick="toggleWishlist()">❤️</div>
+    <div class="icon" onclick="toggleCart()">🛒 <span id="count">0</span></div>
+    <div class="icon" onclick="toggleProfile()">👤</div>
   </div>
 </header>
 
-<h2 class="title">Fashion Carnival 🔥 50% OFF</h2>
+<!-- DROPDOWNS -->
+<div id="wishlistBox" class="dropdown hide"></div>
+<div id="cartBox" class="dropdown hide"></div>
 
-<!-- CATEGORY BOXES -->
+<div id="profileBox" class="dropdown hide">
+  <h4>Username</h4>
+  <p onclick="showOrders()">Orders</p>
+  <p>Settings</p>
+  <p class="logout">Logout</p>
+</div>
+
+<!-- CATEGORY -->
 <div class="category">
   <div onclick="openCategory('Men')" class="box">
-    <img src="https://source.unsplash.com/300x300/?men,fashion">
-    <p>MEN</p>
+    <img src="https://picsum.photos/300?1"><p>MEN</p>
   </div>
-
   <div onclick="openCategory('Women')" class="box">
-    <img src="https://source.unsplash.com/300x300/?women,fashion">
-    <p>WOMEN</p>
+    <img src="https://picsum.photos/300?2"><p>WOMEN</p>
   </div>
-
   <div onclick="openCategory('Kids')" class="box">
-    <img src="https://source.unsplash.com/300x300/?kids,fashion">
-    <p>KIDS</p>
+    <img src="https://picsum.photos/300?3"><p>KIDS</p>
   </div>
 </div>
 
 <!-- PRODUCTS -->
 <div id="products" class="grid"></div>
 
-<!-- CART -->
-<div id="cart" class="panel hide"></div>
-
-<!-- CHECKOUT -->
-<div id="checkout" class="panel hide">
-  <h3>Delivery Address</h3>
-  <input id="addr" placeholder="Enter address">
-
-  <h3>Payment</h3>
-  <select id="payment">
-    <option>UPI</option>
-    <option>Card</option>
-    <option>Cash on Delivery</option>
-  </select>
-
-  <button onclick="placeOrder()">Place Order</button>
-</div>
-
-<!-- SUCCESS -->
-<div id="success" class="panel hide">
-  <h2>✅ Order Placed Successfully</h2>
-</div>
+<!-- PRODUCT DETAILS -->
+<div id="details" class="popup hide"></div>
 
 <!-- ORDERS -->
 <div id="orders" class="panel hide"></div>
