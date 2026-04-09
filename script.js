@@ -1,54 +1,60 @@
+let products=[];
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 let wishlist = JSON.parse(localStorage.getItem("wish")) || [];
+let orders = JSON.parse(localStorage.getItem("orders")) || [];
 
-function recommend(){
-  let occ = document.getElementById("occasion").value;
-  let wea = document.getElementById("weather").value;
-  let sty = document.getElementById("style").value;
+function loadCategory(type){
+  let p=document.getElementById("products");
+  p.innerHTML="";
+  products=[];
 
-  let result = [];
-
-  // Logic-based recommendations
-  if(occ==="Party" && sty==="Trendy"){
-    result = ["Printed Shirt","Slim Jeans","Sneakers"];
-  }
-  else if(occ==="College"){
-    result = ["Tshirt","Jeans","Shoes"];
-  }
-  else if(occ==="Wedding"){
-    result = ["Traditional Wear","Kurta","Sandals"];
+  for(let i=1;i<=20;i++){
+    products.push({
+      name:type+" Dress "+i,
+      price:500+i*15,
+      img:`https://picsum.photos/200?random=${i+Math.random()}`
+    });
   }
 
-  if(wea==="Winter"){
-    result.push("Jacket");
-  }
-
-  display(result);
+  display(products);
 }
 
-function display(items){
-  let r = document.getElementById("results");
-  r.innerHTML="";
+function display(list){
+  let p=document.getElementById("products");
+  p.innerHTML="";
 
-  items.forEach((x,i)=>{
-    r.innerHTML+=`
+  list.forEach((x,i)=>{
+    p.innerHTML+=`
     <div class="product">
-      <img src="https://picsum.photos/200?random=${i}">
-      <p>${x}</p>
-      <button onclick="addCart('${x}')">Add to Bag</button>
-      <button onclick="addWish('${x}')">❤️</button>
+      <img src="${x.img}">
+      <p>${x.name}</p>
+      <p>₹${x.price}</p>
+
+      <select id="size${i}">
+        <option>S</option><option>M</option><option>L</option>
+      </select>
+
+      <select id="color${i}">
+        <option>Red</option><option>Black</option><option>Blue</option>
+      </select>
+
+      <button onclick="addCart(${i})">Add to Cart</button>
+      <button onclick="addWish(${i})">❤️ Wishlist</button>
     </div>`;
   });
 }
 
-function addCart(item){
-  cart.push(item);
+function addCart(i){
+  let size=document.getElementById("size"+i).value;
+  let color=document.getElementById("color"+i).value;
+
+  cart.push({...products[i], size, color});
   save();
-  alert("Added to Bag");
+  alert("Added to Cart");
 }
 
-function addWish(item){
-  wishlist.push(item);
+function addWish(i){
+  wishlist.push(products[i]);
   save();
   alert("Added to Wishlist");
 }
@@ -58,11 +64,22 @@ function showCart(){
   c.style.display="block";
   c.innerHTML="<h3>Cart</h3>";
 
-  cart.forEach(x=>{
-    c.innerHTML+=`<p>${x}</p>`;
+  let total=0;
+
+  cart.forEach((x,idx)=>{
+    total+=x.price;
+    c.innerHTML+=`<p>${x.name} (${x.size},${x.color})
+    <button onclick="removeCart(${idx})">❌</button></p>`;
   });
 
+  c.innerHTML+=`<h4>Total ₹${total}</h4>`;
   c.innerHTML+=`<button onclick="placeOrder()">Place Order</button>`;
+}
+
+function removeCart(i){
+  cart.splice(i,1);
+  save();
+  showCart();
 }
 
 function showWishlist(){
@@ -70,18 +87,28 @@ function showWishlist(){
   w.style.display="block";
   w.innerHTML="<h3>Wishlist</h3>";
 
-  wishlist.forEach(x=>{
-    w.innerHTML+=`<p>${x}</p>`;
+  wishlist.forEach((x,idx)=>{
+    w.innerHTML+=`<p>${x.name}
+    <button onclick="moveToCart(${idx})">Move</button></p>`;
   });
 }
 
+function moveToCart(i){
+  cart.push(wishlist[i]);
+  wishlist.splice(i,1);
+  save();
+  showWishlist();
+}
+
 function placeOrder(){
-  alert("Order placed 🎉");
+  orders.push(...cart);
   cart=[];
   save();
+  alert("Order placed 🎉");
 }
 
 function save(){
-  localStorage.setItem("cart",JSON.stringify(cart));
-  localStorage.setItem("wish",JSON.stringify(wishlist));
+  localStorage.setItem("cart", JSON.stringify(cart));
+  localStorage.setItem("wish", JSON.stringify(wishlist));
+  localStorage.setItem("orders", JSON.stringify(orders));
 }
