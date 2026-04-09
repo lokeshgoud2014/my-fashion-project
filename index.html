@@ -9,12 +9,12 @@
 <header class="navbar">
   <div class="logo">Fashion</div>
 
-  <input placeholder="Search for products...">
+  <input placeholder="Search...">
 
   <div class="icons">
-    <div class="icon" onclick="toggleWishlist()">❤️</div>
-    <div class="icon" onclick="toggleCart()">🛒 <span id="count">0</span></div>
-    <div class="icon" onclick="toggleProfile()">👤</div>
+    <div class="icon" id="wishIcon">❤️</div>
+    <div class="icon" id="cartIcon">🛒 <span id="count">0</span></div>
+    <div class="icon" id="profileIcon">👤</div>
   </div>
 </header>
 
@@ -29,16 +29,28 @@
   <p class="logout">Logout</p>
 </div>
 
+<!-- FILTER -->
+<div class="filters">
+  <select onchange="filterPrice(this.value)">
+    <option value="All">All</option>
+    <option value="1000">Below 1000</option>
+    <option value="2000">Below 2000</option>
+  </select>
+</div>
+
 <!-- CATEGORY -->
 <div class="category">
   <div onclick="openCategory('Men')" class="box">
-    <img src="https://picsum.photos/300?1"><p>MEN</p>
+    <img src="https://source.unsplash.com/300x300/?men,fashion">
+    <p>MEN</p>
   </div>
   <div onclick="openCategory('Women')" class="box">
-    <img src="https://picsum.photos/300?2"><p>WOMEN</p>
+    <img src="https://source.unsplash.com/300x300/?women,fashion">
+    <p>WOMEN</p>
   </div>
   <div onclick="openCategory('Kids')" class="box">
-    <img src="https://picsum.photos/300?3"><p>KIDS</p>
+    <img src="https://source.unsplash.com/300x300/?kids,fashion">
+    <p>KIDS</p>
   </div>
 </div>
 
@@ -48,11 +60,27 @@
 <!-- PRODUCT DETAILS -->
 <div id="details" class="popup hide"></div>
 
+<!-- CHECKOUT -->
+<div id="checkout" class="panel hide">
+  <h3>Delivery Address</h3>
+  <input id="addr" placeholder="Enter address">
+
+  <h3>Payment Details</h3>
+  <input placeholder="Card Number">
+  <input placeholder="Expiry (MM/YY)">
+  <input placeholder="CVV">
+
+  <h4>OR</h4>
+  <input placeholder="Enter UPI ID">
+
+  <button onclick="placeOrder()">Pay Now</button>
+</div>
+
 <!-- ORDERS -->
 <div id="orders" class="panel hide"></div>
 
-<script src="script.js"></script>
 </body>
+<script src="script.js"></script>
 </html>
 
 
