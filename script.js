@@ -1,50 +1,28 @@
 let products=[];
 let id=1;
+let cart=[];
+let orders=[];
 
-/* REAL IMAGE CATEGORY BASE */
+/* GENERATE PRODUCTS */
 ["Men","Women","Kids"].forEach(cat=>{
   for(let i=1;i<=20;i++){
-    let img =
-      cat==="Men"
-      ? `https://source.unsplash.com/300x300/?men,shirt&sig=${id}`
-      : cat==="Women"
-      ? `https://source.unsplash.com/300x300/?women,dress&sig=${id}`
-      : `https://source.unsplash.com/300x300/?kids,clothes&sig=${id}`;
-
     products.push({
       id:id++,
-      name:cat+" Style "+i,
+      name:cat+" Dress "+i,
       category:cat,
       price:Math.floor(Math.random()*2000)+500,
-      reviews:["Nice product"],
-      image:img
+      sizes:["S","M","L","XL"],
+      colors:["red","blue","black","green"],
+      image:`https://picsum.photos/300?random=${id}`
     });
   }
 });
 
-let cart=[], wishlist=[], orders=[];
-let current="All";
-
-/* SLIDER */
-let slides=document.querySelectorAll(".slider img");
-let index=0;
-setInterval(()=>{
-  slides.forEach(s=>s.classList.remove("active"));
-  slides[index].classList.add("active");
-  index=(index+1)%slides.length;
-},10000);
-
 /* CATEGORY */
 function openCategory(cat){
-  current=cat;
-  renderProducts();
-}
-
-/* PRODUCTS */
-function renderProducts(){
   let el=document.getElementById("products");
 
-  let data=products.filter(p=>current==="All"||p.category===current);
+  let data=products.filter(p=>p.category===cat);
 
   el.innerHTML=data.map(p=>`
     <div class="card">
@@ -52,16 +30,18 @@ function renderProducts(){
       <h4>${p.name}</h4>
       <p>₹${p.price}</p>
 
-      <button onclick="addCart(${p.id})">🛒</button>
-      <button onclick="toggleWishlist(${p.id})">
-        ${wishlist.find(i=>i.id===p.id)?"❤️":"🤍"}
-      </button>
+      <p>Size:
+        <select>
+          ${p.sizes.map(s=>`<option>${s}</option>`).join("")}
+        </select>
+      </p>
 
-      <h5>Reviews</h5>
-      ${p.reviews.map(r=>`<p>${r}</p>`).join("")}
+      <p>Colors:</p>
+      <div class="colors">
+        ${p.colors.map(c=>`<span style="background:${c}"></span>`).join("")}
+      </div>
 
-      <input id="rev${p.id}" placeholder="Add review">
-      <button onclick="addReview(${p.id})">Submit</button>
+      <button onclick="addCart(${p.id})">Add to Cart</button>
     </div>
   `).join("");
 }
@@ -80,51 +60,37 @@ function showCart(){
   let total=cart.reduce((s,i)=>s+i.price,0);
 
   el.innerHTML="<h3>Cart</h3>"+
-  cart.map(i=>`<p>${i.name}</p>`).join("")+
-  `<h4>Total ₹${total}</h4>`;
+  cart.map(i=>`<p>${i.name} - ₹${i.price}</p>`).join("")+
+  `<h4>Total ₹${total}</h4>
+   <button onclick="goCheckout()">Checkout</button>`;
 }
 
-/* WISHLIST */
-function toggleWishlist(id){
-  let exists=wishlist.find(i=>i.id===id);
-  if(exists){
-    wishlist=wishlist.filter(i=>i.id!==id);
-  }else{
-    wishlist.push(products.find(p=>p.id===id));
-  }
-  showWishlist();
-  renderProducts();
+/* CHECKOUT */
+function goCheckout(){
+  document.getElementById("checkout").classList.remove("hide");
 }
 
-function showWishlist(){
-  let el=document.getElementById("wishlist");
-  el.classList.remove("hide");
+/* ORDER */
+function placeOrder(){
+  let total=cart.reduce((s,i)=>s+i.price,0);
 
-  el.innerHTML="<h3>Wishlist</h3>"+
-  wishlist.map(i=>`<p>${i.name}</p>`).join("");
+  orders.push({
+    total:total,
+    date:new Date().toLocaleString()
+  });
+
+  cart=[];
+  document.getElementById("count").innerText=0;
+
+  document.getElementById("success").classList.remove("hide");
+  showOrders();
 }
 
-/* REVIEWS */
-function addReview(id){
-  let text=document.getElementById("rev"+id).value;
-  let p=products.find(x=>x.id===id);
-  p.reviews.push(text);
-  renderProducts();
-}
-
-/* PROFILE */
-function toggleProfile(){
-  document.getElementById("profileMenu").classList.toggle("hide");
-}
-
-/* ORDERS */
+/* ORDER HISTORY */
 function showOrders(){
   let el=document.getElementById("orders");
   el.classList.remove("hide");
 
-  el.innerHTML="<h3>Orders</h3>"+
-  orders.map(o=>`<p>₹${o.total}</p>`).join("");
+  el.innerHTML="<h3>Order History</h3>"+
+  orders.map(o=>`<p>${o.date} - ₹${o.total}</p>`).join("");
 }
-
-/* INIT */
-renderProducts();
