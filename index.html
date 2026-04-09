@@ -2,164 +2,41 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fashion ULTRA PRO</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
-body{font-family:Poppins;margin:0;background:#f5f5f5;transition:0.3s}
-.dark{background:#121212;color:#fff}
-header{display:flex;justify-content:space-between;padding:10px;background:#fff}
-.dark header{background:#1e1e1e}
-button{cursor:pointer}
-
-.sidebar{position:fixed;left:0;top:0;width:200px;height:100%;background:#fff;padding:10px;overflow:auto}
-.dark .sidebar{background:#1e1e1e}
-
-.products{margin-left:210px;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;padding:10px}
-.product{background:#fff;padding:10px;border-radius:10px;transition:0.3s}
-.dark .product{background:#1e1e1e}
-.product:hover{transform:scale(1.05)}
-.product img{width:100%;height:120px;object-fit:cover}
-.badge{background:red;color:#fff;padding:2px 5px;font-size:12px}
-
-.panel{position:fixed;right:0;top:0;width:300px;height:100%;background:#fff;padding:10px;overflow:auto;display:none}
-.dark .panel{background:#1e1e1e}
-
-footer{position:fixed;bottom:0;width:100%;background:#fff;display:flex;justify-content:space-around;padding:8px}
-.dark footer{background:#1e1e1e}
-
-.loading{position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;display:flex;align-items:center;justify-content:center}
-</style>
+<title>AJIO Clone</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="loading" id="loading">Loading...</div>
-
 <header>
-<div>AJIO</div>
-<div>
-<button onclick="toggleDark()">🌙</button>
-<button onclick="showCart()">🛒</button>
-</div>
+  <div class="logo">AJIO</div>
+  <div class="icons">
+    <span onclick="showWishlist()">❤️</span>
+    <span onclick="showCart()">🛍️</span>
+    <span onclick="showAccount()">👤</span>
+  </div>
 </header>
 
-<div class="sidebar">
-<h3>Filters</h3>
-<input placeholder="Search" id="search"><br><br>
-<label>Price < 1000</label><input type="checkbox" id="priceFilter"><br>
-<label>Size M</label><input type="checkbox" id="sizeFilter"><br>
-<label>Color Black</label><input type="checkbox" id="colorFilter">
+<div class="categories">
+  <div onclick="openCategory('men')">Men</div>
+  <div onclick="openCategory('women')">Women</div>
+  <div onclick="openCategory('kids')">Kids</div>
 </div>
 
-<div class="products" id="products"></div>
+<div id="subcategories"></div>
+<div id="products"></div>
 
-<div class="panel" id="cartBox">
-<h3>Cart</h3>
-<ul id="cartItems"></ul>
-<p id="total"></p>
-<button onclick="goCheckout()">Checkout</button>
+<div id="wishlistBox" class="panel"></div>
+<div id="cartBox" class="panel"></div>
+
+<div id="accountBox" class="panel">
+  <h3>Account</h3>
+  <input id="username" placeholder="Enter Name">
+  <button onclick="saveUser()">Save</button>
+  <h4>Orders</h4>
+  <ul id="orders"></ul>
 </div>
 
-<div class="panel" id="checkoutBox">
-<h3>Checkout</h3>
-<input placeholder="Address" id="address"><br>
-<select id="payment"><option>UPI</option><option>Card</option></select>
-<button onclick="placeOrder()">Place Order</button>
-</div>
-
-<div class="panel" id="ordersBox">
-<h3>Orders</h3>
-<ul id="orders"></ul>
-</div>
-
-<footer>
-<div onclick="goHome()">🏠</div>
-<div onclick="showOrders()">📦</div>
-<div onclick="showCart()">🛒</div>
-</footer>
-
-<script>
-let products=[];
-let cart=JSON.parse(localStorage.getItem('cart'))||[];
-let orders=JSON.parse(localStorage.getItem('orders'))||[];
-
-// fetch API products
-fetch('https://fakestoreapi.com/products')
-.then(res=>res.json())
-.then(data=>{
-products=data;
-display(products);
-document.getElementById('loading').style.display='none';
-});
-
-function display(list){
-let p=document.getElementById('products');p.innerHTML='';
-list.forEach((item,i)=>{
-p.innerHTML+=`<div class='product'>
-<span class='badge'>50% OFF</span>
-<img src='${item.image}'>
-<p>${item.title.substring(0,20)}</p>
-⭐ ${item.rating.rate}
-<p>₹${item.price}</p>
-<button onclick='addCart(${i})'>Add</button>
-<button onclick='remove(${i})'>Remove</button>
-</div>`;
-});}
-
-function addCart(i){cart.push(products[i]);save();renderCart();}
-function remove(i){cart.splice(i,1);save();renderCart();}
-
-function renderCart(){
-let list=document.getElementById('cartItems');
-let total=0;list.innerHTML='';
-cart.forEach(item=>{total+=item.price;list.innerHTML+=`<li>${item.title}</li>`});
-document.getElementById('total').innerText='Total ₹'+total;
-}
-
-function save(){localStorage.setItem('cart',JSON.stringify(cart));}
-
-function showCart(){toggle('cartBox');renderCart();}
-function goCheckout(){toggle('checkoutBox');}
-function showOrders(){toggle('ordersBox');renderOrders();}
-
-function placeOrder(){
-orders.push(...cart);
-localStorage.setItem('orders',JSON.stringify(orders));
-cart=[];save();
-alert('Payment Success 🎉');
-}
-
-function renderOrders(){
-let o=document.getElementById('orders');o.innerHTML='';
-orders.forEach(i=>o.innerHTML+=`<li>${i.title}</li>`);
-}
-
-function toggle(id){
-let el=document.getElementById(id);
-el.style.display=el.style.display==='block'?'none':'block';
-}
-
-function toggleDark(){document.body.classList.toggle('dark');}
-
-// filters
-search.oninput=()=>{
-let val=search.value.toLowerCase();
-display(products.filter(p=>p.title.toLowerCase().includes(val)));
-};
-
-priceFilter.onchange=applyFilter;
-sizeFilter.onchange=applyFilter;
-colorFilter.onchange=applyFilter;
-
-function applyFilter(){
-let list=products.filter(p=>{
-return (!priceFilter.checked||p.price<1000);
-});
-display(list);
-}
-
-function goHome(){location.reload();}
-</script>
-
+<script src="script.js"></script>
 </body>
 </html>
   
