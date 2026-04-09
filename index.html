@@ -2,20 +2,25 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AJIO Clone</title>
+<title>Fashion Store</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <div class="logo">AJIO</div>
-  <div class="icons">
+  <h2>AJIO</h2>
+  <div>
     <span onclick="showWishlist()">❤️</span>
     <span onclick="showCart()">🛍️</span>
-    <span onclick="showAccount()">👤</span>
   </div>
 </header>
 
+<!-- Banner -->
+<div class="banner">
+  <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d">
+</div>
+
+<!-- Categories -->
 <div class="categories">
   <div onclick="openCategory('men')">Men</div>
   <div onclick="openCategory('women')">Women</div>
@@ -25,16 +30,11 @@
 <div id="subcategories"></div>
 <div id="products"></div>
 
+<!-- Wishlist -->
 <div id="wishlistBox" class="panel"></div>
-<div id="cartBox" class="panel"></div>
 
-<div id="accountBox" class="panel">
-  <h3>Account</h3>
-  <input id="username" placeholder="Enter Name">
-  <button onclick="saveUser()">Save</button>
-  <h4>Orders</h4>
-  <ul id="orders"></ul>
-</div>
+<!-- Cart -->
+<div id="cartBox" class="panel"></div>
 
 <script src="script.js"></script>
 </body>
