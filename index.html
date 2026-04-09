@@ -8,50 +8,57 @@
 
 <header class="navbar">
   <div class="logo">Fashion</div>
-
-  <input id="search" placeholder="Search for products..." onkeyup="renderProducts()">
-
+  <input placeholder="Search for products...">
   <div class="icons">
-    <span onclick="showWishlist()">❤️</span>
-    <span onclick="showCart()">🛒 (<b id="count">0</b>)</span>
-    <span onclick="toggleProfile()">👤</span>
+    ❤️ <span onclick="showCart()">🛒 (<b id="count">0</b>)</span> 👤
   </div>
 </header>
 
-<!-- PROFILE DROPDOWN -->
-<div id="profileMenu" class="dropdown hide">
-  <h4 id="username">User</h4>
-  <p onclick="showOrders()">Orders</p>
-  <p>Help Center</p>
-  <p>Manage Account</p>
-  <p>Settings</p>
-  <p class="logout">Logout</p>
-</div>
-
-<!-- SLIDER -->
-<div class="slider">
-  <img src="https://picsum.photos/800/250?1">
-  <img src="https://picsum.photos/800/250?2">
-  <img src="https://picsum.photos/800/250?3">
-</div>
-
 <h2 class="title">Fashion Carnival 🔥 50% OFF</h2>
 
-<!-- CATEGORY -->
-<div class="grid">
-  <div onclick="openCategory('Men')">MEN</div>
-  <div onclick="openCategory('Women')">WOMEN</div>
-  <div onclick="openCategory('Kids')">KIDS</div>
+<!-- CATEGORY BOXES -->
+<div class="category">
+  <div onclick="openCategory('Men')" class="box">
+    <img src="https://source.unsplash.com/300x300/?men,fashion">
+    <p>MEN</p>
+  </div>
+
+  <div onclick="openCategory('Women')" class="box">
+    <img src="https://source.unsplash.com/300x300/?women,fashion">
+    <p>WOMEN</p>
+  </div>
+
+  <div onclick="openCategory('Kids')" class="box">
+    <img src="https://source.unsplash.com/300x300/?kids,fashion">
+    <p>KIDS</p>
+  </div>
 </div>
 
 <!-- PRODUCTS -->
 <div id="products" class="grid"></div>
 
-<!-- WISHLIST -->
-<div id="wishlist" class="panel hide"></div>
-
 <!-- CART -->
 <div id="cart" class="panel hide"></div>
+
+<!-- CHECKOUT -->
+<div id="checkout" class="panel hide">
+  <h3>Delivery Address</h3>
+  <input id="addr" placeholder="Enter address">
+
+  <h3>Payment</h3>
+  <select id="payment">
+    <option>UPI</option>
+    <option>Card</option>
+    <option>Cash on Delivery</option>
+  </select>
+
+  <button onclick="placeOrder()">Place Order</button>
+</div>
+
+<!-- SUCCESS -->
+<div id="success" class="panel hide">
+  <h2>✅ Order Placed Successfully</h2>
+</div>
 
 <!-- ORDERS -->
 <div id="orders" class="panel hide"></div>
