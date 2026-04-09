@@ -1,5 +1,5 @@
 body{
-  font-family: Arial;
+  font-family:Arial;
   margin:0;
   background:#f5f5f5;
 }
@@ -9,49 +9,29 @@ header{
   justify-content:space-between;
   padding:10px;
   background:white;
-  box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
-.slider img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-
-.categories{
+.banner{
+  height:200px;
+  background:url('https://picsum.photos/800/300') center/cover;
   display:flex;
-  justify-content:space-around;
-  background:white;
-  padding:10px;
+  align-items:center;
+  justify-content:center;
+  color:white;
 }
 
-.categories div{
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.categories div:hover{
-  color:#ff3f6c;
-}
-
-.filters{
+.selectors{
   display:flex;
   gap:10px;
-  padding:10px;
+  padding:15px;
+  justify-content:center;
 }
 
-#subcategories{
-  display:flex;
-  flex-wrap:wrap;
-  padding:10px;
-}
-
-#subcategories div{
-  margin:5px;
-  padding:6px 12px;
-  background:white;
-  border-radius:20px;
-  cursor:pointer;
+button{
+  padding:8px;
+  background:#ff3f6c;
+  color:white;
+  border:none;
 }
 
 .products{
@@ -78,34 +58,14 @@ header{
   object-fit:cover;
 }
 
-button{
-  width:100%;
-  margin-top:5px;
-  padding:6px;
-  border:none;
-  background:#ff3f6c;
-  color:white;
-}
-
 .panel{
   position:fixed;
   right:0;
   top:0;
-  width:260px;
+  width:250px;
   height:100%;
   background:white;
   display:none;
-  padding:10px;
-  overflow:auto;
-}
-
-footer{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  background:white;
-  display:flex;
-  justify-content:space-around;
   padding:10px;
 }
  
