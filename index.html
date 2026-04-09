@@ -2,59 +2,53 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AJIO Final</title>
+<title>Smart Fashion Recommender</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
 <header>
-  <h2>AJIO</h2>
+  <h2>Smart Fashion</h2>
   <div>
     <span onclick="showWishlist()">❤️</span>
     <span onclick="showCart()">🛍️</span>
-    <span onclick="showAccount()">👤</span>
   </div>
 </header>
 
-<div class="slider">
-  <img id="slide" src="https://picsum.photos/id/1011/800/300">
+<!-- Banner -->
+<div class="banner">
+  <h1>Find Your Perfect Outfit 👗</h1>
 </div>
 
-<div class="categories">
-  <div onclick="openCategory('men')">Men</div>
-  <div onclick="openCategory('women')">Women</div>
-  <div onclick="openCategory('kids')">Kids</div>
-</div>
-
-<div class="filters">
-  <input type="text" id="search" placeholder="Search">
-  <select id="priceFilter">
-    <option value="all">All</option>
-    <option value="low">Below 700</option>
-    <option value="high">Above 700</option>
+<!-- Selection -->
+<div class="selectors">
+  <select id="occasion">
+    <option>Party</option>
+    <option>College</option>
+    <option>Wedding</option>
   </select>
+
+  <select id="weather">
+    <option>Summer</option>
+    <option>Winter</option>
+  </select>
+
+  <select id="style">
+    <option>Casual</option>
+    <option>Trendy</option>
+  </select>
+
+  <button onclick="recommend()">Get Outfit 🔥</button>
 </div>
 
-<div id="subcategories"></div>
-<div id="products"></div>
+<!-- Results -->
+<div id="results" class="products"></div>
 
+<!-- Wishlist -->
 <div id="wishlistBox" class="panel"></div>
+
+<!-- Cart -->
 <div id="cartBox" class="panel"></div>
-
-<div id="accountBox" class="panel">
-  <h3>Account</h3>
-  <input id="username" placeholder="Enter Name">
-  <button onclick="saveUser()">Save</button>
-  <h4>Orders</h4>
-  <ul id="orders"></ul>
-</div>
-
-<footer>
-  <div onclick="goHome()">🏠</div>
-  <div onclick="showWishlist()">❤️</div>
-  <div onclick="showCart()">🛍️</div>
-  <div onclick="showAccount()">👤</div>
-</footer>
 
 <script src="script.js"></script>
 </body>
